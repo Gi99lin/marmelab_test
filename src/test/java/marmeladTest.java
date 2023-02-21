@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class marmeladTest {
@@ -69,17 +70,82 @@ public class marmeladTest {
         System.out.println("Number of elements:" +(customers2.size()-1));
 
         int a =(int) ( Math.random() * customers2.size());
+        int b = a+1;
 
-        System.out.println(a);
+        System.out.println("Customer number:" +a);
 
         By opensmth = By.xpath("//tbody/tr["+ a +"]/td/div");
         driver.findElement(opensmth).click();
 
-        WebElement name = driver.findElement(By.xpath("//tr[4]/td[7]//span[text()]"));
-        String actualElement = name.getText();
-        System.out.println(name);
-        System.out.println(actualElement);
+        String orderLine = driver.findElement(By.xpath("//tr["+a+"]/td[7]//span[text()]")).getText();
+        //String actualElement = orderLine.getText();
+        System.out.println("Order ID "+orderLine);
+        //System.out.println(actualElement);
 
+        String idLine = driver.findElement(By.xpath("//tr["+a+"]/td[3]//span[text()]")).getText();
+        //String actualElement2 = idLine.getText();
+        System.out.println("Customer ID "+idLine);
+        //System.out.println(actualElement2);
+
+        String dateLine = driver.findElement(By.xpath("//tr["+a+"]/td[4]/span[text()]")).getText();
+        System.out.println("Order date "+dateLine);
+
+        String nameLine = driver.findElement(By.xpath("//tr["+a+"]/td[5]//div[text()]")).getText();
+        System.out.println("Customer name "+nameLine);
+
+        String nameIn = driver.findElement(By.xpath("//tr["+b+"]//div[1]/div[1]/h6[text()]")).getText();
+        System.out.println("Customer name "+nameIn);
+
+        String dateIn = driver.findElement(By.xpath("//td//div[4]/div[1]/p[text()]")).getText();
+        System.out.println("Order date "+dateIn);
+
+        String idIn = driver.findElement(By.xpath("//tr["+b+"]//div[1]/div[2]/h6[text()]")).getText();
+        System.out.println("Customer ID "+idIn);
+
+        String orderIn = driver.findElement(By.xpath("//td//div[4]/div[2]/p[text()]")).getText();
+        System.out.println("Order ID "+orderIn);
+
+        idIn = idIn.replace("Invoice ", "");
+
+        System.out.println(idIn);
+
+        int val = 0;
+        val = idLine.compareTo(idIn);
+        System.out.println(val);
+
+        if (val == 0) {
+            System.out.println("Same ID");
+        }else{
+            System.out.println("Incorrect ID");
+        }
+        val = 0;
+        val = orderLine.compareTo(orderIn);
+        System.out.println(val);
+
+        if (orderIn == orderLine){
+            System.out.println("Same ordr ID");
+        }else {
+            System.out.println("Incorrect order ID");
+        }
+        val = 0;
+        val = nameIn.compareTo(nameLine);
+        System.out.println(val);
+
+        if (val == 0){
+            System.out.println("Same name");
+        }else {
+            System.out.println("Incorrect name");
+        }
+
+        val = 0;
+        val = dateLine.compareTo(dateIn);
+        System.out.println(val);
+
+        if (val == 0){
+            System.out.println("Same date");
+        }else {
+            System.out.println("Incorrect date");
+        }
 
 
     }
