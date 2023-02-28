@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class marmeladTest {
     @Test
     public void testSearch() throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://marmelab.com/react-admin-demo/#/login");
@@ -58,10 +59,17 @@ public class marmeladTest {
         driver.findElement(invoicesSM).click();
 
         By inputSince = By.xpath("//input[@id='date_gte']");
-        driver.findElement(inputSince).sendKeys("01.01.2022");
+        driver.findElement(inputSince).click();
 
-        By inputBefore = By.xpath("//input[@id='date_lte']");
-        driver.findElement(inputBefore).sendKeys("01.08.2023");
+
+        //By inputSince = By.xpath("//input[@id='date_gte']");
+        //driver.findElement(inputSince).sendKeys("01.01.2022");
+
+        //By inputBefore = By.xpath("//input[@id='date_lte']");
+        //driver.findElement(inputBefore).sendKeys("01.08.2023");
+
+        String firstCustomer =driver.findElement(By.xpath("//tbody/tr[1]//span/a/div")).getText();
+        System.out.println(firstCustomer.contains("Korey Mohr"));
 
         TimeUnit.SECONDS.sleep(2);
 
@@ -70,6 +78,9 @@ public class marmeladTest {
         System.out.println("Number of elements:" +(customers2.size()-1));
 
         int a =(int) ( Math.random() * customers2.size());
+        if (a == 0)
+            a = a+1;
+
         int b = a+1;
 
         System.out.println("Customer number:" +a);
@@ -122,8 +133,8 @@ public class marmeladTest {
         val = orderLine.compareTo(orderIn);
         System.out.println(val);
 
-        if (orderIn == orderLine){
-            System.out.println("Same ordr ID");
+        if (val == 0){
+            System.out.println("Same order ID");
         }else {
             System.out.println("Incorrect order ID");
         }
@@ -146,6 +157,53 @@ public class marmeladTest {
         }else {
             System.out.println("Incorrect date");
         }
+
+        By customers = By.xpath("//a[text()='Customers']");
+        driver.findElement(customers).click();
+
+        nameLine = nameLine.replace(" ", "_");
+
+        By search = By.xpath("//input[@aria-invalid]");
+        driver.findElement(search).sendKeys(nameLine);
+
+        TimeUnit.SECONDS.sleep(2);
+
+        By openProfile = By.xpath("//td/a");
+        driver.findElement(openProfile).click();
+
+        TimeUnit.SECONDS.sleep(2);
+
+        String deleteString = Keys.chord(Keys.COMMAND, "a") + Keys.DELETE;
+
+        String newAddres = "New address 2233";
+        String oldAddress = driver.findElement(By.xpath("//div/textarea[1]")).getText();
+        System.out.println(oldAddress);
+        By oldAddressElement = By.xpath("//div/textarea[1]");
+        driver.findElement(oldAddressElement).click();
+        driver.findElement(oldAddressElement).sendKeys(deleteString);
+        driver.findElement(oldAddressElement).sendKeys(newAddres);
+
+
+        By saveButton = By.xpath("//button[@type='submit']");
+        driver.findElement(saveButton).click();
+
+        driver.findElement(invoicesSM).click();
+
+        String checkAddress = driver.findElement(By.xpath("//div[2]/div/p[text()]")).getText();
+        System.out.println(checkAddress.contains(newAddres));
+
+        driver.findElement(customers).click();
+        driver.findElement(search).sendKeys(deleteString);
+        driver.findElement(search).sendKeys(nameLine);
+        TimeUnit.SECONDS.sleep(2);
+        driver.findElement(openProfile).click();
+        TimeUnit.SECONDS.sleep(2);
+        driver.findElement(oldAddressElement).click();
+        driver.findElement(oldAddressElement).sendKeys(deleteString);
+        driver.findElement(oldAddressElement).sendKeys(oldAddress);
+        driver.findElement(saveButton).click();
+        
+
 
 
     }
