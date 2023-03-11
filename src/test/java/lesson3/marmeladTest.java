@@ -1,3 +1,5 @@
+package lesson3;
+
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class marmeladTest {
     @Test
     public void testSearch() throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://marmelab.com/react-admin-demo/#/login");
@@ -59,19 +61,15 @@ public class marmeladTest {
         driver.findElement(invoicesSM).click();
 
         By inputSince = By.xpath("//input[@id='date_gte']");
-        driver.findElement(inputSince).click();
+        driver.findElement(inputSince).sendKeys("01.01.2022");
 
+        By inputBefore = By.xpath("//input[@id='date_lte']");
+        driver.findElement(inputBefore).sendKeys("01.08.2023");
 
-        //By inputSince = By.xpath("//input[@id='date_gte']");
-        //driver.findElement(inputSince).sendKeys("01.01.2022");
-
-        //By inputBefore = By.xpath("//input[@id='date_lte']");
-        //driver.findElement(inputBefore).sendKeys("01.08.2023");
-
-        String firstCustomer =driver.findElement(By.xpath("//tbody/tr[1]//span/a/div")).getText();
+        String firstCustomer = driver.findElement(By.xpath("//tbody/tr[1]//span/a/div")).getText();
         System.out.println(firstCustomer.contains("Korey Mohr"));
 
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(200);
 
         List customers2 = driver.findElements(By.xpath("//img"));
 
@@ -173,7 +171,7 @@ public class marmeladTest {
 
         TimeUnit.SECONDS.sleep(2);
 
-        String deleteString = Keys.chord(Keys.COMMAND, "a") + Keys.DELETE;
+        String deleteString = Keys.chord(Keys.CONTROL, "a") + Keys.DELETE;
 
         String newAddres = "New address 2233";
         String oldAddress = driver.findElement(By.xpath("//div/textarea[1]")).getText();
